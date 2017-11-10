@@ -1,0 +1,5 @@
+投稿する
+->　新しい投稿が会った時
+if neko.check_update:
+	post.content or post.check_status
+現在の状況を知る(未投稿、売り切れ、オープンなど)
