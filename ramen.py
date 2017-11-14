@@ -16,7 +16,7 @@ NOT_POSTED = "not_posted"
 
 class NekoRamen(object):
 
-    def __init__(self, url):
+    def __init__(self, url="https://www5.hp-ez.com/hp/haratyan/blog"):
         self.url = url
         self.soup = ScrapingFunctions.make_soup(self.url)
         self.post_num = 0
@@ -59,6 +59,9 @@ class NekoRamen(object):
         self.soup = ScrapingFunctions.make_soup(self.url)
 
     def get_latest_post(self):
+        """
+        return latest post
+        """
         self.__init__(self.url)
         blogBlock = self.soup.find_all("div", class_="blogBlock")
         blogBlock = blogBlock[0]
@@ -90,22 +93,23 @@ class NekoRamen(object):
         """
         check if there is new post
         ramen.info contains datetime when its last checked 
+        return True when there is new post
         """
         update = True
-        with open("ramen.info", "r") as f:
-            info = f.read()
-        # get last checked date
         try:
-            last_checked_date = eval(info)
-            # get last posted date 
-            latest_post_date = self.get_latest_post().post_time
+            with open("ramen.info", "r") as f:
+                info = f.read()
+                # get last checked date
+                last_checked_date = eval(info)
+                # get last posted date 
+                latest_post_date = self.get_latest_post().post_time
 
-            # if the post is newer than last checked date
-            if latest_post_date > last_checked_date:
-                update = True
-            else:
-                update = False
-        except SyntaxError:
+                # if the post is newer than last checked date
+                if latest_post_date > last_checked_date:
+                    update = True
+                else:
+                    update = False
+        except ( SyntaxError,  FileNotFoundError ):
             print("ramen.info is deleted or broken")
             update = True 
         with open("ramen.info", "w") as f:
@@ -155,6 +159,8 @@ if __name__ == "__main__":
     if neko.check_update():
         print(neko.check_status_today())
     print(post.content)
+"""
+
 
     for i, post in enumerate( neko ):
         if i <= 2000:
@@ -165,5 +171,7 @@ if __name__ == "__main__":
 
     with open("all_posts.pickle", mode="wb") as f:
         pickle.dump(posts, f)
+
+"""
 
     
