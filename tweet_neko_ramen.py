@@ -13,6 +13,8 @@ if neko.check_update():
 
     if len(tweet) > 140:
         tweet = tweet[:140] + "..."
-    
-    api = twy.api
-    api.update_status(status=tweet)
+else:
+    tweet = "This is for debug use"
+
+api = twy.api
+api.update_status(status=tweet)
