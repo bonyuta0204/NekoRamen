@@ -1,4 +1,5 @@
 from ramen import *
+import datetime
 import twy
 
 neko = NekoRamen() 
@@ -14,7 +15,7 @@ if neko.check_update():
     if len(tweet) > 140:
         tweet = tweet[:140] + "..."
 else:
-    tweet = "This is for debug use"
+    tweet = "This is for debug use"+ str( datetime.datetime.now() )
 
 api = twy.api
 api.update_status(status=tweet)
