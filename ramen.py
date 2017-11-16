@@ -113,6 +113,7 @@ class NekoRamen(object):
             print("ramen.info is deleted or broken")
             update = True 
         with open("ramen.info", "w") as f:
+            print("updatin ramen, info...")
             current_time = datetime.datetime.now()
             f.write(repr(current_time))
         return update
