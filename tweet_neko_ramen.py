@@ -16,6 +16,6 @@ if neko.check_update():
         tweet = tweet[:140] + "..."
 else:
     tweet = "This is for debug use"+ str( datetime.datetime.now() )
-
+print(tweet)
 api = twy.api
 api.update_status(status=tweet)
