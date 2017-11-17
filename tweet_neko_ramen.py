@@ -18,10 +18,12 @@ if len(tweet) > 140:
 api = twy.api
 last_tweet = api.user_timeline()[0].text
 # when tweet is already posted, 
+last_tweet = last_tweet.split()
+tweet = tweet.split()
 print(last_tweet)
 print(tweet)
 
-if last_tweet[10]  == tweet[10]:
+if last_tweet[:2]  == tweet[:2]:
     print("already tweeded")
 else:
     print("new tweet") 
