@@ -26,7 +26,7 @@ class NekoRamen(object):
         return self
 
     def __str__(self):
-        return soup.prettify()
+        return self.soup.prettify()
 
     def __next__(self):
         self.post_num += 1
@@ -100,7 +100,18 @@ class NekoRamen(object):
             with open("ramen.info", "r") as f:
                 info = f.read()
                 # get last checked date
-                last_checked_date = eval(info)
+                try:
+                    last_checked_date = datetime.datetime.fromisoformat(info.strip())
+                except ValueError:
+                    # Read the legacy datetime.datetime(...) format without eval.
+                    match = re.fullmatch(
+                        r"datetime\.datetime\((\d+(?:,\s*\d+){2,6})\)", info.strip()
+                    )
+                    if match is None:
+                        raise ValueError("Invalid last-check timestamp")
+                    last_checked_date = datetime.datetime(
+                        *(int(value.strip()) for value in match.group(1).split(","))
+                    )
                 # get last posted date 
                 latest_post_date = self.get_latest_post().post_time
 
@@ -109,13 +120,13 @@ class NekoRamen(object):
                     update = True
                 else:
                     update = False
-        except ( SyntaxError,  FileNotFoundError ):
+        except (ValueError, FileNotFoundError):
             print("ramen.info is deleted or broken")
             update = True 
         with open("ramen.info", "w") as f:
             print("updatin ramen, info...")
             current_time = datetime.datetime.now()
-            f.write(repr(current_time))
+            f.write(current_time.isoformat())
         return update
             
 class Post(object):

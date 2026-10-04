@@ -1,9 +1,17 @@
-#coding:utf-8
+"""Minimal health endpoint. Importing this module does not start a server."""
+
 import os
-from bottle import route, run
 
-@route("/")
+from bottle import Bottle, run
+
+
+app = Bottle()
+
+
+@app.route("/")
 def hello_world():
-        return "hello world"
+    return "hello world"
 
-run(host="0.0.0.0", port=int(os.environ.get("PORT",5000)))
+
+if __name__ == "__main__":
+    run(app=app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
