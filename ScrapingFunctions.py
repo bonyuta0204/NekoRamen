@@ -3,13 +3,15 @@
 """Module which contains useful function for scraping"""
 import requests
 from bs4 import BeautifulSoup
-import subprocess
+import webbrowser
 from io import BytesIO
+from PIL import Image
 
 
 def make_soup(url):
     """make soup from url"""
-    html = requests.get(url)
+    html = requests.get(url, timeout=30)
+    html.raise_for_status()
     return BeautifulSoup(html.content, "html5lib")
 
 
@@ -44,12 +46,13 @@ def find_link(url, keys=None):
 
 def open_browser(url):
     """open url in a browser"""
-    subprocess.call("start %s" % url, shell=True)
+    return webbrowser.open(url)
 
 
 def get_image(url):
     """get image from url"""
-    img_html = requests.get(url)
+    img_html = requests.get(url, timeout=30)
+    img_html.raise_for_status()
     img = Image.open(BytesIO(img_html.content))
 
     return img
